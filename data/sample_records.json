@@ -1,0 +1,21 @@
+
+[
+  {
+    "id": "001",
+    "title": "Crop Insurance Overview",
+    "category": "insurance",
+    "description": "Sample record for testing the CropCover API."
+  },
+  {
+    "id": "002",
+    "title": "Rice Crop Information",
+    "category": "crop",
+    "description": "Sample record for testing document search."
+  },
+  {
+    "id": "003",
+    "title": "PMFBY Guidance",
+    "category": "scheme",
+    "description": "Sample record for testing scheme document retrieval."
+  }
+]
