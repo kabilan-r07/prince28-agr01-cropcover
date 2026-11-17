@@ -1,0 +1,53 @@
+
+[
+  {
+    "id": "001",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Ariyalur",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null
+  },
+  {
+    "id": "002",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Chengalpattu",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null
+  },
+  {
+    "id": "003",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Cuddalore",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null
+  },
+  {
+    "id": "004",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Dharmapuri",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null
+  },
+  {
+    "id": "005",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Erode",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null
+  }
+]
