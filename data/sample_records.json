@@ -1,14 +1,15 @@
 
 [
   {
-    "id": "001",
+    "id": "0001",
     "season": "Samba/Thaladi/Pisanam 2026-27",
     "district": "Ariyalur",
     "crop": "Paddy",
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "002",
@@ -18,7 +19,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "003",
@@ -28,7 +30,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "004",
@@ -38,7 +41,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "005",
@@ -48,7 +52,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "006",
@@ -58,7 +63,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "007",
@@ -68,7 +74,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "008",
@@ -78,7 +85,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "009",
@@ -88,7 +96,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "010",
@@ -98,7 +107,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "011",
@@ -108,7 +118,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "012",
@@ -118,7 +129,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "013",
@@ -128,7 +140,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "014",
@@ -138,7 +151,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "015",
@@ -148,7 +162,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "016",
@@ -158,7 +173,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "017",
@@ -168,7 +184,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "018",
@@ -178,7 +195,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "019",
@@ -188,7 +206,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "020",
@@ -198,6 +217,7 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   }
 ]
