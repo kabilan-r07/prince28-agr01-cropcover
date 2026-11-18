@@ -56,3 +56,23 @@ paste the output of: uv run python scripts/explain.py season VALUE
 Why did the planner choose a Seq Scan on my table? (2 lines, your own words)
 
 When would it switch to the GIN index? (1 line)
+
+
+### Migrations (upgrade, downgrade, upgrade)
+
+```text
+Downgrade:
+705bf1db39f3 -> e4897ad68ecd
+add gin index on metadata
+
+Current:
+e4897ad68ecd
+
+Upgrade:
+e4897ad68ecd -> 705bf1db39f3
+add gin index on metadata
+
+History:
+e4897ad68ecd -> 705bf1db39f3 (head), add gin index on metadata
+<base> -> e4897ad68ecd, create documents and pages
+```
