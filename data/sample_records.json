@@ -8,7 +8,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "002",
@@ -18,7 +19,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "003",
@@ -28,7 +30,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "004",
@@ -38,7 +41,8 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   },
   {
     "id": "005",
@@ -48,6 +52,172 @@
     "sum_insured_per_ha": null,
     "farmer_premium_pct": null,
     "cutoff_date": "2026-12-01",
-    "insurer": null
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "006",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Kallakurichi",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "007",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Kancheepuram",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "008",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Karur",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "009",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Krishnagiri",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "010",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Madurai",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "011",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Mayiladuthurai",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "012",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Nagapattinam",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "013",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Perambalur",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "014",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Pudukkottai",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "015",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Ramanathapuram",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "016",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Ranipet",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "017",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Salem",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "018",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Sivaganga",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "019",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Thanjavur",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
+  },
+  {
+    "id": "020",
+    "season": "Samba/Thaladi/Pisanam 2026-27",
+    "district": "Theni",
+    "crop": "Paddy",
+    "sum_insured_per_ha": null,
+    "farmer_premium_pct": null,
+    "cutoff_date": "2026-12-01",
+    "insurer": null,
+    "source_url": "https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf"
   }
 ]
