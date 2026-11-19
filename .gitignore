@@ -4,8 +4,6 @@ __pycache__/
 .venv/
 .pytest_cache/
 .ruff_cache/
-.coverage
-htmlcov/
 
 # Secrets: never commit
 .env
@@ -19,3 +17,7 @@ data/raw/
 .vscode/
 .idea/
 .DS_Store
+
+# Test and coverage output
+.coverage
+htmlcov/

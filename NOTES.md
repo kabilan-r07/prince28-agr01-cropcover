@@ -96,5 +96,54 @@ GET /ready with Postgres stopped: {"status":"not_ready","checks":{"database":fal
 GET /ready after Postgres restart: {"status":"ready","checks":{"database":true}}
 Second migration/seed after compose down/up: records=20 inserted=0 updated=0 unchanged=20
 Final services: db and redis healthy; api healthy; migrate exited (0)
-Test database created: test (owner app)
+Initial Compose test database: test (owner app); integration base database: app_test (owner app)
 ```
+
+## D04 · Docker, Compose and tests
+
+### The image
+
+```text
+IMAGE           ID             DISK USAGE   CONTENT SIZE
+cropcover:dev   0df71ec51a4f        300MB           70MB
+uid=999(app) gid=999(app) groups=999(app)
+```
+
+- Size: 300 MB (target: under 400 MB)
+- First build: about 38 s. After changing one line of code: 7.6 s.
+- The dependency-only `uv sync --locked --no-install-project --no-dev` step was `CACHED`; it only depends on the lockfile and project metadata, which did not change.
+
+### The stack
+
+```text
+NAME                  SERVICE   STATUS
+cropcover-api-1       api       Up (healthy)
+cropcover-db-1        db        Up (healthy)
+cropcover-migrate-1   migrate   Exited (0)
+cropcover-redis-1     redis     Up (healthy)
+
+First migrate log: records=20 inserted=20 updated=0 unchanged=0
+After down + up:   records=20 inserted=0 updated=0 unchanged=20
+```
+
+### Breaking the database on purpose
+
+```text
+db stopped:  /health -> {"status":"ok","app":"cropcover","env":"local"}
+db stopped:  /ready  -> {"status":"not_ready","checks":{"database":false}}
+db started:  /ready  -> {"status":"ready","checks":{"database":true}}
+```
+
+A load balancer should stop sending traffic while readiness is false because the API cannot serve database-backed requests. The process is alive, so restarting it would not fix the stopped database.
+
+### Tests and coverage
+
+```text
+uv run poe test              -> 16 passed in 0.44s
+uv run poe test-integration  -> 7 passed in 2.44s (second run also passed: 7)
+coverage TOTAL, unit only    -> TOTAL 254 36 26 2 83%
+coverage TOTAL, with integration tests -> TOTAL 254 9 26 3 96%
+```
+
+`src/cropcover/api/deps.py:38-39` is the database-error readiness branch; it matters because readiness must fail on database errors.
+`src/cropcover/api/middleware.py:23-25` is the unhandled-error response path; it matters for returning a consistent 500 response with a request ID.
