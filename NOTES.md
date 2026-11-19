@@ -76,3 +76,25 @@ History:
 e4897ad68ecd -> 705bf1db39f3 (head), add gin index on metadata
 <base> -> e4897ad68ecd, create documents and pages
 ```
+
+## D04 · Docker
+
+```text
+First build: about 38 seconds
+Rebuild after changing one source line: 7.6 seconds
+The dependency-only uv sync layer was CACHED on rebuild.
+Image disk usage: 300 MB (under the 400 MB target).
+Container identity: uid=999(app) gid=999(app) groups=999(app)
+```
+
+## D05 · Compose
+
+```text
+First migration/seed: records=20 inserted=20 updated=0 unchanged=0
+GET /health with Postgres stopped: {"status":"ok","app":"cropcover","env":"local"}
+GET /ready with Postgres stopped: {"status":"not_ready","checks":{"database":false}}
+GET /ready after Postgres restart: {"status":"ready","checks":{"database":true}}
+Second migration/seed after compose down/up: records=20 inserted=0 updated=0 unchanged=20
+Final services: db and redis healthy; api healthy; migrate exited (0)
+Test database created: test (owner app)
+```

@@ -1,1 +1,1 @@
-CREATE DATABASE test OWNER app;
+CREATE DATABASE app_test OWNER app;
