@@ -147,3 +147,42 @@ coverage TOTAL, with integration tests -> TOTAL 254 9 26 3 96%
 
 `src/cropcover/api/deps.py:38-39` is the database-error readiness branch; it matters because readiness must fail on database errors.
 `src/cropcover/api/middleware.py:23-25` is the unhandled-error response path; it matters for returning a consistent 500 response with a request ID.
+
+
+
+## D05 · CI/CD and going live
+
+- Live URL: https://cropcover.onrender.com
+- CI run for pull request 1: https://github.com/kabilan-r07/prince28-agr01-cropcover/actions/runs/44699540404
+- First deploy that ran by itself: https://github.com/kabilan-r07/prince28-agr01-cropcover/actions/runs/44702916046
+- Merge clicked at 1:59 PM → "Smoke test passed" at 2:00 PM → lead time: 1 min
+
+### Smoke test output from that CD run
+
+Run:
+`uv run python scripts/smoke.py "https://cropcover.onrender.com" --expect-version "${SHA}"`
+
+```text
+ok version ed98c578d0ae13f71a684d1a9c6b97aadb3e98e2; database ready; documents serving
+
+Smoke test passed
+```
+
+### Rollback drill
+
+- Rolled back to SHA `ed98c578d0ae13f71a684d1a9c6b97aadb3e98e2`: started **6:28 PM**, smoke passed **approximately 6:31 PM** (approximately 3 min).
+- Rolled forward to SHA `7fbd906fc978aab41a2b8651576b97a1aeb7bbd50`: deployment version matched; final smoke test confirmation and duration pending.
+
+During the rollback, the database stayed on the newer schema. Why is that safe here?
+
+The newer database schema is backward-compatible with the older application version. No destructive database changes were made during rollback.
+
+### Where my secrets live
+
+- Neon string: GitHub Secret DATABASE_URL + Render environment. Not in Git, not in the image.
+- Render deploy hook: GitHub Secret RENDER_DEPLOY_HOOK only.
+
+### Monitoring
+
+- UptimeRobot checks /health every 5 minutes; alerts go to my email.
+- One thing that would make my live app faster on its first request: Using an always-on Render instance prevents cold starts.
