@@ -1,10 +1,17 @@
 # CropCover – Crop Insurance Assistant
 
+
+[![CI](https://github.com/kabilan-r07/prince28-agr01-cropcover/actions/workflows/ci.yml/badge.svg)](https://github.com/kabilan-r07/prince28-agr01-cropcover/actions/workflows/ci.yml)
+[![Live](https://img.shields.io/website?url=https%3A%2F%2Fcropcover.onrender.com%2Fhealth&label=live)](https://cropcover.onrender.com/docs)
+[![Uptime (30 days)](https://img.shields.io/uptimerobot/ratio/m804746065-8f84f5e0c7acddb913fee4b2)](https://cropcover.onrender.com/health)
+
+**Live:** [https://cropcover.onrender.com](https://cropcover.onrender.com) · [API docs](https://cropcover.onrender.com/docs) · [health](https://cropcover.onrender.com/health)
+
 CropCover is an AI-powered crop insurance guidance application designed to help Tamil Nadu farmers understand the **Pradhan Mantri Fasal Bima Yojana (PMFBY)** scheme.
 
 It provides information about crop insurance coverage, claim procedures, claim deadlines, premium amounts, and sum insured based on official government documents.
 
-**Project Status:** Day 1 – Foundation Development
+**Status:** Week 1 complete · live at https://cropcover.onrender.com
 
 ## Who Is It For?
 
