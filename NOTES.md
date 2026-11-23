@@ -186,3 +186,40 @@ The newer database schema is backward-compatible with the older application vers
 
 - UptimeRobot checks /health every 5 minutes; alerts go to my email.
 - One thing that would make my live app faster on its first request: Using an always-on Render instance prevents cold starts.
+
+## D06 - Collecting the corpus
+
+- Start target: Operational guidelines + FAQs + latest Tamil Nadu notification.
+- Collected today: 10 files, 737 pages, 71.90 MB (from `DATASET.md`). The current corpus is older than the full start target; it contains earlier guidelines and 2024-26 Tamil Nadu tender annexures.
+- Doors used: URL list.
+
+### Licence check
+
+| Source | Licence or terms, in my words | May I show full text in answers? |
+|---|---|---|
+| PMFBY | Copyright policy requires prior permission for reproduction and prominent source acknowledgement. | No, until permission is granted. |
+| Tamil Nadu Agrisnet | Copyright notice is present; I did not find a clear reuse grant or terms page. | Not confirmed; do not display full text until clarified. |
+| Coimbatore District (candidate 2026-27 notice) | Copyright policy requires permission by email; third-party material can require separate permission. | No, until permission is granted. |
+
+### robots.txt
+
+- PMFBY: `https://pmfby.gov.in/robots.txt` returned HTTP 200 with homepage HTML, not usable robots directives.
+- Tamil Nadu Agrisnet: `https://www.tnagrisnet.tn.gov.in/robots.txt` returned 404; no robots rules were published at that URL.
+- Blocked for this bot: 0 sources in the final successful run. This is only the fetcher's robots result; it does not establish copyright permission.
+
+### Kill and resume
+
+- Run 1: Ctrl+C after 6 completed files; the expected `Stopped. Run the same command again: finished files are skipped.` message appeared.
+- Run 2: downloaded=4, skipped=6.
+- Run 3: downloaded=0, skipped=10.
+- Deleted one PDF and reran: only that file returned (`downloaded=1`, `skipped=9`). No `.part` files remained.
+
+### Capacity
+
+- Tokens per page, measured estimate: ~391, using extracted characters divided by four (not a model tokenizer).
+- Full corpus: ~0.288 M estimated tokens, ~641 assumed 500-token chunks with 50-token overlap, embedding scenario ~₹0.54, vectors ~3.94 MB. Assumptions and limits are in [`docs/CAPACITY.md`](docs/CAPACITY.md).
+- The number that surprised me most: the YES-TECH manual is 61.7 MB, about 86% of the corpus bytes, despite being 116 pages. Its embedded PDF assets make file size a poor proxy for text volume.
+
+### One thing that went wrong today, and how I fixed it
+
+Six initial links returned JavaScript shell pages rather than documents. I inspected file signatures, replaced those entries with direct PDF links, removed the shell files, and verified the final ten local files are PDFs. Current-target candidates and their permission requirements are noted above; they have not been added or downloaded.
