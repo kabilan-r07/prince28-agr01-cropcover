@@ -224,9 +224,15 @@ def make_client(max_concurrency: int = 4) -> httpx.AsyncClient:
     )
 
 
-async def _download(client: httpx.AsyncClient, src: Source, root: Path, raw_dir: Path) -> dict:
+async def _download(
+    client: httpx.AsyncClient, src: Source, root: Path, raw_dir: Path, etag: str | None = None
+) -> dict:
     """One attempt. Streams to <name>.part, renames when complete, returns the manifest fields."""
-    async with client.stream("GET", src.url) as response:
+    headers = {"If-None-Match": etag} if etag else None
+    async with client.stream("GET", src.url, headers=headers) as response:
+        response_etag = response.headers.get("ETag")
+        if response.status_code == 304:
+            return {"not_modified": True, "http_status": 304, "etag": etag}
         if response.status_code != 200:
             raise DownloadError(
                 f"HTTP {response.status_code}",
@@ -256,6 +262,7 @@ async def _download(client: httpx.AsyncClient, src: Source, root: Path, raw_dir:
         "sha256": digest.hexdigest(),
         "content_type": content_type.split(";")[0].strip(),
         "http_status": 200,
+        "etag": response_etag,
     }
 
 
@@ -270,6 +277,7 @@ async def fetch_one(
     slots: asyncio.Semaphore,
     max_attempts: int,
     sleep: Sleep,
+    previous: dict | None = None,
 ) -> dict:
     """Download one source with retries. Always returns a manifest record, never raises."""
     record = {
@@ -284,15 +292,51 @@ async def fetch_one(
         return record | {"status": "blocked", "error": "robots.txt", "fetched_at": now_iso()}
     host = urlsplit(src.url).netloc
     error, code, attempt = "", None, 0
+    started = time.perf_counter()
     for attempt in range(1, max_attempts + 1):
         wait = backoff_delay(attempt - 1)
         async with slots:  # at most N downloads at the same time
             await gate.wait(host, crawl_delay)
             try:
                 async with asyncio.timeout(ATTEMPT_TIMEOUT):
-                    fields = await _download(client, src, root, raw_dir)
+                    fields = await _download(
+                        client, src, root, raw_dir, (previous or {}).get("etag")
+                    )
+                if fields.pop("not_modified", False):
+                    kept = {
+                        key: value
+                        for key, value in (previous or {}).items()
+                        if key
+                        not in {
+                            "url",
+                            "source",
+                            "licence",
+                            "title",
+                            "via",
+                            "status",
+                            "fetched_at",
+                            "attempts",
+                            "http_status",
+                        }
+                    }
+                    return (
+                        record
+                        | kept
+                        | fields
+                        | {
+                            "status": "downloaded",
+                            "attempts": attempt,
+                            "elapsed_seconds": round(time.perf_counter() - started, 3),
+                            "fetched_at": now_iso(),
+                        }
+                    )
                 done = {"status": "downloaded", "attempts": attempt, "fetched_at": now_iso()}
-                return record | fields | done
+                return (
+                    record
+                    | fields
+                    | done
+                    | {"elapsed_seconds": round(time.perf_counter() - started, 3)}
+                )
             except DownloadError as exc:
                 error, code = str(exc), exc.code
                 if code not in RETRYABLE:
@@ -323,11 +367,12 @@ async def fetch_all(
     client: httpx.AsyncClient | None = None,
     sleep: Sleep = asyncio.sleep,
     on_result: Callable[[dict], None] | None = None,
+    refresh: bool = False,
 ) -> dict[str, int]:
     """Download every source that is not already done. Returns the counts per status."""
     raw_dir = root / "data" / "raw"
     manifest = Manifest(root / "data" / "manifest.jsonl")
-    todo = [src for src in sources if not manifest.done(src.url, root)]
+    todo = [src for src in sources if refresh or not manifest.done(src.url, root)]
     counts = {"downloaded": 0, "skipped": len(sources) - len(todo), "blocked": 0, "failed": 0}
     own_client = client is None
     client = client or make_client(max_concurrency)
@@ -347,6 +392,9 @@ async def fetch_all(
                     slots=slots,
                     max_attempts=max_attempts,
                     sleep=sleep,
+                    previous=(
+                        manifest.records.get(src.url) if manifest.done(src.url, root) else None
+                    ),
                 )
             )
             for src in todo

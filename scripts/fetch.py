@@ -74,6 +74,7 @@ def cmd_urls(args: argparse.Namespace) -> int:
             sources,
             max_concurrency=args.max_concurrency,
             per_host_delay=args.delay,
+            refresh=args.refresh,
             on_result=show,
         )
     )
@@ -219,6 +220,7 @@ def main() -> int:
         "--max-concurrency", type=int, default=4, help="downloads at once (default 4)"
     )
     urls.add_argument("--delay", type=float, default=0.5, help="seconds between hits on one site")
+    urls.add_argument("--refresh", action="store_true", help="revalidate saved URLs using ETags")
     urls.add_argument("--limit", type=int, default=0, help="only the first N sources")
     urls.set_defaults(run=cmd_urls)
 

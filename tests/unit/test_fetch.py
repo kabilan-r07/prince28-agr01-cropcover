@@ -29,6 +29,7 @@ class FakeSite:
         self.busy = 0
         self.max_busy = 0
         self.slept: list[float] = []
+        self.request_headers: list[dict[str, str]] = []
 
     async def handler(self, request: httpx.Request) -> httpx.Response:
         path = request.url.path
@@ -37,6 +38,7 @@ class FakeSite:
                 return httpx.Response(self.robots)
             return httpx.Response(200, text=self.robots)
         self.hits.append(path)
+        self.request_headers.append(dict(request.headers))
         self.busy += 1
         self.max_busy = max(self.max_busy, self.busy)
         await asyncio.sleep(0.005)  # let other downloads start, like a real network would
@@ -45,7 +47,7 @@ class FakeSite:
         status = queue.pop(0) if queue else 200
         if status != 200:
             return httpx.Response(status, headers=self.error_headers)
-        return httpx.Response(200, html=f"<h1>{path}</h1>")
+        return httpx.Response(200, html=f"<h1>{path}</h1>", headers={"ETag": '"v1"'})
 
     async def sleep(self, seconds: float) -> None:
         self.slept.append(seconds)  # record the wait instead of really waiting
@@ -84,6 +86,27 @@ async def test_second_run_downloads_nothing(tmp_path):
     counts = await site.run(make_sources(5), tmp_path)
     assert counts["skipped"] == 5 and counts["downloaded"] == 0
     assert len(site.hits) == 5  # still five requests in total: nothing was fetched twice
+
+
+async def test_refresh_revalidates_with_etag_and_keeps_file_on_304(tmp_path):
+    site = FakeSite()
+    src = make_sources(1)[0]
+    await site.run([src], tmp_path)
+    saved = raw_files(tmp_path)[0]
+
+    async def unchanged(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/robots.txt":
+            return httpx.Response(404)
+        site.request_headers.append(dict(request.headers))
+        return httpx.Response(304)
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(unchanged)) as client:
+        counts = await fetch_all(
+            [src], root=tmp_path, client=client, sleep=site.sleep, per_host_delay=0, refresh=True
+        )
+    assert counts["downloaded"] == 1
+    assert site.request_headers[-1]["if-none-match"] == '"v1"'
+    assert saved.is_file() and manifest(tmp_path)[-1]["http_status"] == 304
 
 
 async def test_resume_fetches_only_what_is_missing(tmp_path):

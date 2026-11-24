@@ -193,6 +193,12 @@ The newer database schema is backward-compatible with the older application vers
 - Collected today: 10 files, 737 pages, 71.90 MB (from `DATASET.md`). The current corpus is older than the full start target; it contains earlier guidelines and 2024-26 Tamil Nadu tender annexures.
 - Doors used: URL list.
 
+### Crawl numbers
+
+- 10 unique downloaded URLs: PMFBY 3 files / 63.29 MB; Tamil Nadu Agrisnet 7 files / 8.61 MB (decimal MB, latest manifest record per URL).
+- Slowest site cannot be determined for this historical run: the manifest has fetch timestamps but no per-response duration. New HTTP downloads now record `elapsed_seconds` for future comparisons.
+- 0 of 10 unique files needed more than one attempt; every latest downloaded record says `attempts: 1`.
+
 ### Licence check
 
 | Source | Licence or terms, in my words | May I show full text in answers? |
