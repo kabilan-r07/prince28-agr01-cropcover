@@ -186,3 +186,45 @@ The newer database schema is backward-compatible with the older application vers
 
 - UptimeRobot checks /health every 5 minutes; alerts go to my email.
 - One thing that would make my live app faster on its first request: Using an always-on Render instance prevents cold starts.
+
+## D07 - Parser comparison
+
+| File | Parser A (pages/chars) | Parser B (pages/chars) | Better and why |
+|---|---:|---:|---|
+| `data\raw\pmfby\yes-tech-manual-2023-09c72587.pdf` | PyMuPDF: 116/101563 | pypdf: 116/88781 | _review_ |
+| `C:\git\prince28-agr01-cropcover\data\raw\tnagrisnet\9-02ffba92.pdf` | error: no_text_layer: 393 characters on 178 pages: needs OCR | not run | _review_ |
+| `C:\git\prince28-agr01-cropcover\data\raw\tnagrisnet\7-c913d110.pdf` | error: no_text_layer: 94 characters on 173 pages: needs OCR | not run | _review_ |
+| `data\raw\tnagrisnet\1-01f7218f.pdf` | PyMuPDF: 56/95460 | pypdf: 56/92905 | _review_ |
+| `data\raw\pmfby\revised-operational-guidelines-53ba6b34.pdf` | PyMuPDF: 99/271074 | pypdf: 99/256199 | _review_ |
+| `data\raw\tnagrisnet\3-080e8e63.pdf` | PyMuPDF: 11/30275 | pypdf: 11/22892 | _review_ |
+| `data\raw\pmfby\rwbcis-revised-guidelines-1-1a893711.pdf` | PyMuPDF: 19/37766 | pypdf: 19/36323 | _review_ |
+| `data\raw\tnagrisnet\4-8d7afd1a.pdf` | PyMuPDF: 36/136658 | pypdf: 36/132171 | _review_ |
+| `C:\git\prince28-agr01-cropcover\data\raw\tnagrisnet\5-22729f04.pdf` | error: no_text_layer: 0 characters on 11 pages: needs OCR | not run | _review_ |
+| `data\raw\tnagrisnet\2-c87bf560.pdf` | PyMuPDF: 38/96258 | pypdf: 38/82582 | _review_ |
+
+
+### D07 - Parsing my corpus
+
+- Files in manifest: ___ | parsed: ___ | failed: ___ | pages in Postgres: ___
+- Parsing coverage: ___% of files
+
+#### Failures by reason
+
+| Reason | Files | What I did |
+|---|---:|---|
+| | | |
+
+- The one I fixed: file ___, reason ___, fix: ___ (or record zero failures)
+
+#### What I saw when I read parsed pages
+
+- A page where the heading path is right (document, page, path): ___
+- Something that came out wrong (document, page, what): ___
+- A table: Markdown grid or loose text? (document, page): ___
+
+#### My parser choice
+
+- For PDFs I use ___ because (2 lines, with numbers from the comparison): ___
+- A kind of document neither parser handles well: ___
+
+- One thing that went wrong today, and how I fixed it: ___
