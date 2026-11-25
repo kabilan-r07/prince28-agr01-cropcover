@@ -130,11 +130,23 @@ async def test_stream_yields_answer_and_result_metadata():
 
 
 async def test_stream_falls_back_before_sending_any_piece():
-    primary = FakeLLM("gemini", script=[LLMError("503", retryable=True)])
+    primary = FakeLLM(
+        "gemini", script=[LLMError("503", retryable=True), LLMError("503", retryable=True)]
+    )
     backup = FakeLLM("groq", script=["From backup"])
     items = [item async for item in LLMGateway([primary, backup]).stream(ASK)]
     assert "".join(items[:-1]).strip() == "From backup"
     assert items[-1].fallback_used
+
+
+async def test_stream_retries_transient_failure_before_first_piece():
+    async def no_wait(seconds):
+        return None
+
+    provider = FakeLLM("gemini", script=[LLMError("503", retryable=True), "Recovered stream"])
+    items = [item async for item in LLMGateway([provider], sleep=no_wait).stream(ASK)]
+    assert "".join(items[:-1]).strip() == "Recovered stream"
+    assert items[-1].attempts == 2 and provider.calls == 2
 
 
 async def test_stream_failure_after_partial_answer_does_not_switch_provider():

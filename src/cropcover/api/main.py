@@ -27,6 +27,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI):
         logger.info("starting", extra={"status": settings.app_env})
         yield
+        await app.state.gateway.aclose()
         await engine.dispose()
 
     app = FastAPI(

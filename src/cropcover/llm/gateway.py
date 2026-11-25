@@ -76,6 +76,9 @@ class OpenAICompatProvider:
         self._headers = {"Authorization": f"Bearer {api_key}"}
         self._client = client or httpx.AsyncClient(timeout=httpx.Timeout(timeout, connect=10.0))
 
+    async def aclose(self) -> None:
+        await self._client.aclose()
+
     def _body(self, messages, temperature, stream):
         body = {"model": self.model, "messages": messages, "temperature": temperature}
         if stream:
@@ -220,6 +223,11 @@ class LLMGateway:
         self._recorder, self._usd_inr = recorder, usd_inr
         self._max_attempts, self._sleep, self._clock = max_attempts, sleep, clock
 
+    async def aclose(self) -> None:
+        await asyncio.gather(
+            *(provider.aclose() for provider in self.providers if hasattr(provider, "aclose"))
+        )
+
     async def _record(self, provider, purpose, prompt_version, **fields):
         row = {
             "request_id": request_id_ctx.get(),
@@ -299,26 +307,37 @@ class LLMGateway:
             if not breaker.allow():
                 problems.append(f"{provider.name}: circuit open")
                 continue
-            usage, pieces = Reply(), []
-            try:
-                async for piece in provider.stream(messages, usage, **options):
-                    pieces.append(piece)
-                    yield piece
-            except LLMError as exc:
-                breaker.failure()
-                await self._record(
-                    provider, purpose, prompt_version, status="error", error=str(exc)[:300]
-                )
-                if pieces:
-                    raise LLMUnavailable(f"{provider.name} failed mid-answer: {exc}") from exc
-                problems.append(f"{provider.name}: {exc}")
-                continue
-            breaker.success()
-            usage.text = "".join(pieces)
-            result = self._result(provider, messages, usage, started, 1, index)
-            await self._record(provider, purpose, prompt_version, **self._fields(result))
-            yield result
-            return
+            error = None
+            for attempt in range(1, self._max_attempts + 1):
+                usage, pieces = Reply(), []
+                try:
+                    async for piece in provider.stream(messages, usage, **options):
+                        pieces.append(piece)
+                        yield piece
+                except LLMError as exc:
+                    error = exc
+                    if pieces:
+                        breaker.failure()
+                        await self._record(
+                            provider, purpose, prompt_version, status="error", error=str(exc)[:300]
+                        )
+                        raise LLMUnavailable(f"{provider.name} failed mid-answer: {exc}") from exc
+                    if not exc.retryable or attempt == self._max_attempts:
+                        break
+                    wait = max(random.uniform(0, 2**attempt), exc.retry_after or 0.0)
+                    await self._sleep(min(wait, MAX_WAIT))
+                    continue
+                breaker.success()
+                usage.text = "".join(pieces)
+                result = self._result(provider, messages, usage, started, attempt, index)
+                await self._record(provider, purpose, prompt_version, **self._fields(result))
+                yield result
+                return
+            breaker.failure()
+            problems.append(f"{provider.name}: {error}")
+            await self._record(
+                provider, purpose, prompt_version, status="error", error=str(error)[:300]
+            )
         raise LLMUnavailable("; ".join(problems) or "no LLM provider is configured")
 
 
