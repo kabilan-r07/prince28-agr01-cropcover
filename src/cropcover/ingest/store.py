@@ -10,6 +10,16 @@ from cropcover.db.models import Document, Page, ParseFailure
 from cropcover.ingest.parse import ParsedDoc, ParseError
 
 
+def document_title(parsed_title: str, record: dict) -> str:
+    """Prefer source metadata when PDF metadata contains a filename or office placeholder."""
+    title = parsed_title.strip()
+    looks_like_filename = Path(title).suffix.lower() in {".pdf", ".docx", ".xlsx", ".xls"}
+    office_placeholder = title.lower().startswith(("microsoft word -", "microsoft excel -"))
+    if not title or looks_like_filename or office_placeholder:
+        return (record.get("title") or Path(record["path"]).stem).strip()
+    return title
+
+
 def document_id(sha256: str) -> str:
     """Files are identified by their content: the same bytes are the same document."""
     return f"f-{sha256[:20]}"
@@ -26,7 +36,7 @@ async def failed_paths(session: AsyncSession) -> set[str]:
 
 async def save_document(session: AsyncSession, record: dict, parsed: ParsedDoc) -> None:
     """One manifest record + its parsed pages -> documents and pages. Clears an old failure."""
-    title = parsed.title or record.get("title") or Path(record["path"]).stem
+    title = document_title(parsed.title, record)
     document = Document(
         external_id=document_id(record["sha256"]),
         title=title[:500],

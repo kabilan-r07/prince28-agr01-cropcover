@@ -7,6 +7,7 @@ import pytest
 
 from cropcover.ingest import parse
 from cropcover.ingest.parse import ParseError, parse_file
+from cropcover.ingest.store import document_title
 
 BODY = "Dengue is a viral infection spread by Aedes mosquitoes and is common after the rains."
 
@@ -202,3 +203,31 @@ def test_comments_inside_code_blocks_are_not_headings(tmp_path):
     found, _ = parse.headings_in(doc.pages[0].text)
     assert found == [(1, "Install"), (2, "Next steps")]
     assert doc.title == "Install"
+
+
+def test_pymupdf_no_text_layer_falls_back_to_pypdf(tmp_path, monkeypatch):
+    pdf = tmp_path / "scan.pdf"
+    pdf.write_bytes(b"test fixture")
+
+    def no_text(_path):
+        raise ParseError("no_text_layer", "scan")
+
+    monkeypatch.setitem(parse.PDF_PARSERS, "pymupdf", no_text)
+    monkeypatch.setitem(
+        parse.PDF_PARSERS,
+        "pypdf",
+        lambda _path: parse.ParsedDoc(
+            "pypdf", "pdf", "Readable annexure", [parse.ParsedPage(1, "Text", [])]
+        ),
+    )
+    assert parse_file(pdf).parser == "pypdf"
+    with pytest.raises(ParseError, match="no_text_layer"):
+        parse_file(pdf, fallback=False)
+
+
+def test_filename_like_pdf_metadata_uses_source_title():
+    record = {
+        "path": "data/raw/tnagrisnet/sum-insured.pdf",
+        "title": "Tamil Nadu sum insured annexure",
+    }
+    assert document_title("1e28e1ca4b16793f2a2b.xlsx", record) == "Tamil Nadu sum insured annexure"

@@ -32,7 +32,7 @@ class VisibleText(HTMLParser):
 def extract(path: Path, parser: str) -> tuple[int, int, str]:
     suffix = path.suffix.lower()
     if suffix == ".pdf":
-        doc = parse_file(path, pdf_parser=parser)
+        doc = parse_file(path, pdf_parser=parser, fallback=False)
     elif suffix in {".html", ".htm"} and parser == "plain":
         visible = VisibleText()
         visible.feed(path.read_text(encoding="utf-8", errors="replace"))
@@ -41,6 +41,13 @@ def extract(path: Path, parser: str) -> tuple[int, int, str]:
     else:
         doc = parse_file(path)
     return len(doc.pages), sum(len(page.text) for page in doc.pages), doc.title
+
+
+def safe_extract(path: Path, parser: str) -> tuple[int, int, str]:
+    try:
+        return extract(path, parser)
+    except (ParseError, OSError, ValueError) as exc:
+        return (0, 0, f"{type(exc).__name__}: {exc}")
 
 
 def main() -> int:
@@ -72,24 +79,20 @@ def main() -> int:
     rows = []
     for path in paths:
         path = path if path.is_absolute() else ROOT / path
-        try:
-            if path.suffix.lower() == ".pdf":
-                a = extract(path, "pymupdf")
-                b = extract(path, "pypdf")
-                labels = ("PyMuPDF", "pypdf")
-            elif path.suffix.lower() in {".html", ".htm"}:
-                a = extract(path, "trafilatura")
-                b = extract(path, "plain")
-                labels = ("trafilatura", "plain tags")
-            else:
-                a = extract(path, "pymupdf")
-                b = a
-                labels = ("single parser", "single parser")
-            rows.append(
-                (path.relative_to(ROOT) if path.is_relative_to(ROOT) else path, labels, a, b)
-            )
-        except (ParseError, OSError, ValueError) as exc:
-            rows.append((path, ("error", "error"), (0, 0, str(exc)), (0, 0, "not run")))
+        if path.suffix.lower() == ".pdf":
+            a = safe_extract(path, "pymupdf")
+            b = safe_extract(path, "pypdf")
+            labels = ("PyMuPDF", "pypdf")
+        elif path.suffix.lower() in {".html", ".htm"}:
+            a = safe_extract(path, "trafilatura")
+            b = safe_extract(path, "plain")
+            labels = ("trafilatura", "plain tags")
+        else:
+            a = safe_extract(path, "pymupdf")
+            b = a
+            labels = ("single parser", "single parser")
+        display_path = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
+        rows.append((display_path, labels, a, b))
 
     lines = [
         "| File | Parser A (pages/chars) | Parser B (pages/chars) | Better and why |",

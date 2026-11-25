@@ -286,12 +286,20 @@ def parse_text(path: Path) -> ParsedDoc:
 PDF_PARSERS = {"pymupdf": parse_pdf_pymupdf, "pypdf": parse_pdf_pypdf}
 
 
-def parse_file(path: Path, pdf_parser: str = "pymupdf") -> ParsedDoc:
-    """Pick the parser by file type. Raises ParseError, never anything else."""
+def parse_file(path: Path, pdf_parser: str = "pymupdf", *, fallback: bool = True) -> ParsedDoc:
+    """Pick the parser by file type; fall back to pypdf if PyMuPDF finds no text layer."""
     suffix = path.suffix.lower()
     try:
         if suffix == ".pdf":
-            return PDF_PARSERS[pdf_parser](path)
+            try:
+                return PDF_PARSERS[pdf_parser](path)
+            except ParseError as error:
+                if not fallback or pdf_parser != "pymupdf" or error.reason != "no_text_layer":
+                    raise
+                try:
+                    return PDF_PARSERS["pypdf"](path)
+                except ParseError:
+                    raise error from None
         if suffix in {".html", ".htm"}:
             return parse_html(path)
         if suffix in TEXT_TYPES | DATA_TYPES:
