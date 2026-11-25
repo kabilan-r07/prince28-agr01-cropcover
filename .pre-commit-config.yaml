@@ -10,6 +10,7 @@ repos:
       - id: check-toml
       - id: check-added-large-files
         args: ["--maxkb=500"]
+        exclude: ^data/manifest\.jsonl$  # append-only download log can exceed the default size limit
       - id: detect-private-key
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -24,4 +25,4 @@ repos:
     hooks:
       - id: detect-secrets
         # uv.lock hashes and Alembic revision ids look random but are not secrets
-        exclude: ^(uv\.lock|migrations/versions/.*)$
+        exclude: ^(uv\.lock|migrations/versions/.*|data/manifest\.jsonl)$  # SHA-256 values are expected here
