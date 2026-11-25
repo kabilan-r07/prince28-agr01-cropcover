@@ -270,3 +270,15 @@ Six initial links returned JavaScript shell pages rather than documents. I inspe
 - A kind of document neither parser handles well: PDFs with blank front pages and non-Unicode/private-use glyphs; those still need source-level checking.
 
 - One thing that went wrong today, and how I fixed it: PyMuPDF treated three readable Tamil Nadu annexures as scans. I compared pypdf independently, added a fallback, and reran them; all 10 documents now have pages in Postgres.
+
+### D08 · LLM gateway
+
+- Primary: `gemini-3.8-flash` (Gemini) · fallback: `openai/gpt-oss-20b` (Groq)
+- Gateway, streaming `/v1/chat`, `/v1/usage`, call logging, migration, prompt, and CLI client implemented.
+- Verification: 78 unit tests pass; Ruff check and format pass. The `llm_calls` migration is applied to the configured database at revision `4d950cb419ab`.
+- Provider ping: Groq returned `pong`; Gemini first returned HTTP 503 and later HTTP 401 `invalid_api_key`. No model answer or real-call token/cost measurements were collected because Gemini rejected the configured key.
+- First laptop question (after restoring the intended Gemini primary URL): first words after 5.28 s, total 5.70 s, tokens in 258 / out 280, cost Rs 0.009818; Groq answered after Gemini returned HTTP 503.
+- Fallback/breaker: Groq answered after three Gemini 404s with `gemini-no-such-model`; Gemini was skipped on the fourth request while its circuit was open.
+- `/v1/usage` today: 11 calls, 5 errors, 6 fallbacks, Rs 0.0531 total (including the earlier misconfigured call and the breaker exercise).
+- English/Tamil token comparison, one more groundedness example, and live URL results: pending. Gemini's key is set, but the provider returned HTTP 503 during the laptop chat; the ping had previously returned HTTP 401, so verify the key again before deployment.
+- Groundedness note: on the premium-share question the model said it was unsure instead of giving the known cap. PMFBY's official revised guidelines list up to 2% of sum insured for Kharif food-grain/oilseed crops and 1.5% for Rabi; rates can also depend on actuarial premium. [Official guidelines](https://pmfby.gov.in/pdf/Revised_Operational_Guidelines.pdf).

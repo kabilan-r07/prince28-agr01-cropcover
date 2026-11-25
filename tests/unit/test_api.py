@@ -77,6 +77,45 @@ def test_request_id_is_echoed(client):
     assert r.headers["X-Request-ID"] == "abc123"
 
 
+def _events(body: str):
+    events, event, data = [], "", None
+    for line in body.splitlines():
+        if line.startswith("event:"):
+            event = line[6:].strip()
+        elif line.startswith("data:"):
+            data = __import__("json").loads(line[5:])
+        elif not line and data is not None:
+            events.append((event, data))
+            event, data = "", None
+    return events
+
+
+def test_chat_streams_deltas_then_metadata(client):
+    response = client.post("/v1/chat", json={"message": "How do I claim?"})
+    assert response.status_code == 200
+    events = _events(response.text)
+    assert "".join(data["delta"] for event, data in events if not event) == "A general answer. "
+    assert events[-1][0] == "done" and events[-1][1]["provider"] == "fake"
+
+
+def test_chat_json_mode_returns_answer_and_usage(client):
+    response = client.post("/v1/chat", json={"message": "How do I claim?", "stream": False})
+    assert response.status_code == 200
+    assert response.json()["answer"] == "A general answer."
+
+
+def test_chat_prompt_has_uncertainty_instruction(client):
+    assert "not sure" in client.app.state.system_prompt
+
+
+def test_usage_returns_daily_totals(client):
+    response = client.get("/v1/usage")
+    assert response.status_code == 200
+    assert response.json()["days"][0]["tokens_in"] == 300
+    assert response.json()["total_cost_inr"] == 0.0642
+    assert response.json()["calls"] == 3
+
+
 @pytest.mark.parametrize("missing", ["APP_ENV", "DATABASE_URL"])
 def test_app_refuses_to_start_without_required_settings(monkeypatch, missing):
     monkeypatch.setenv("APP_ENV", "ci")
