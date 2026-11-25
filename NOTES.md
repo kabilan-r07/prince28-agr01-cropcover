@@ -270,3 +270,18 @@ Six initial links returned JavaScript shell pages rather than documents. I inspe
 - A kind of document neither parser handles well: PDFs with blank front pages and non-Unicode/private-use glyphs; those still need source-level checking.
 
 - One thing that went wrong today, and how I fixed it: PyMuPDF treated three readable Tamil Nadu annexures as scans. I compared pypdf independently, added a fallback, and reran them; all 10 documents now have pages in Postgres.
+
+### D08 · LLM gateway
+
+- Primary: `gemini-3.8-flash` (Gemini) · fallback: `openai/gpt-oss-20b` (Groq)
+- Gateway, streaming `/v1/chat`, `/v1/usage`, call logging, migration, prompt, and CLI client implemented.
+- Verification: 78 unit tests pass; Ruff check and format pass. The `llm_calls` migration is applied to the configured database at revision `4d950cb419ab`.
+- Provider ping: Groq returned `pong`; Gemini first returned HTTP 503 and later HTTP 401 `invalid_api_key`. No model answer or real-call token/cost measurements were collected because Gemini rejected the configured key.
+- First laptop question (after restoring the intended Gemini primary URL): first words after 5.28 s, total 5.70 s, tokens in 258 / out 280, cost Rs 0.009818; Groq answered after Gemini returned HTTP 503.
+- Fallback/breaker: Groq answered after three Gemini 404s with `gemini-no-such-model`; Gemini was skipped on the fourth request while its circuit was open.
+- `/v1/usage` today: 19 calls, 9 errors, 10 fallbacks, Rs 0.0922 total (includes the earlier misconfigured call and breaker exercise).
+- Token experiment: `Hi` 239 tokens in; English CropCover question 254; Tamil translation 269. Excluding the shared prompt, Tamil used 30 tokens vs English's 15 (about 2x). Tamil characters rendered as `?` in this PowerShell console, but the request reached the model.
+- Groundedness miss: asked “When will my claim money be credited?” The model claimed within 72 hours after submitting a form. The 72-hour rule is for reporting a crop loss after the peril, not a promise that payment will arrive then. The guidelines describe payment timing separately (including 15 days after the loss survey report for specified claims, subject to subsidy conditions). [Official revised guidelines](https://pmfby.gov.in/pdf/Revised_Operational_Guidelines.pdf).
+- On the premium-share question it said it was unsure rather than giving the known cap: up to 2% of sum insured for Kharif food-grain/oilseed crops and 1.5% for Rabi (or actuarial rate if lower). [Official revised guidelines](https://pmfby.gov.in/pdf/Revised_Operational_Guidelines.pdf).
+- Off-topic: asked who won the 2011 Cricket World Cup; the model declined in one sentence. Live URL result: pending merge/deploy. Gemini's key is set, but the provider returned HTTP 503 during laptop chats; the earlier ping also returned HTTP 401 once, so verify the key and provider status again before deployment.
+- One thing that went wrong today: `.env` still pointed the Gemini primary at Groq after a provider-switch experiment. Removed only the two primary model/URL overrides; keys were preserved. Then proved fallback and circuit opening using a temporary invalid model in the server process.

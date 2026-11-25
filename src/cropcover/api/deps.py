@@ -9,7 +9,9 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cropcover.config import Settings
+from cropcover.db.llm_calls import UsageRepository
 from cropcover.db.repository import DocumentRepository
+from cropcover.llm.gateway import LLMGateway
 
 
 def get_app_settings(request: Request) -> Settings:
@@ -24,6 +26,14 @@ async def get_session(request: Request) -> AsyncIterator[AsyncSession]:
 
 async def get_repo(session: Annotated[AsyncSession, Depends(get_session)]) -> DocumentRepository:
     return DocumentRepository(session)
+
+
+def get_gateway(request: Request) -> LLMGateway:
+    return request.app.state.gateway
+
+
+async def get_usage_repo(session: Annotated[AsyncSession, Depends(get_session)]) -> UsageRepository:
+    return UsageRepository(session)
 
 
 async def check_db(request: Request) -> bool:
@@ -41,4 +51,6 @@ async def check_db(request: Request) -> bool:
 
 SettingsDep = Annotated[Settings, Depends(get_app_settings)]
 RepoDep = Annotated[DocumentRepository, Depends(get_repo)]
+GatewayDep = Annotated[LLMGateway, Depends(get_gateway)]
+UsageDep = Annotated[UsageRepository, Depends(get_usage_repo)]
 DbCheckDep = Annotated[bool, Depends(check_db)]
