@@ -285,3 +285,27 @@ Six initial links returned JavaScript shell pages rather than documents. I inspe
 - On the premium-share question it said it was unsure rather than giving the known cap: up to 2% of sum insured for Kharif food-grain/oilseed crops and 1.5% for Rabi (or actuarial rate if lower). [Official revised guidelines](https://pmfby.gov.in/pdf/Revised_Operational_Guidelines.pdf).
 - Off-topic: asked who won the 2011 Cricket World Cup; the model declined in one sentence. Live URL result: pending merge/deploy. Gemini's key is set, but the provider returned HTTP 503 during laptop chats; the earlier ping also returned HTTP 401 once, so verify the key and provider status again before deployment.
 - One thing that went wrong today: `.env` still pointed the Gemini primary at Groq after a provider-switch experiment. Removed only the two primary model/URL overrides; keys were preserved. Then proved fallback and circuit opening using a temporary invalid model in the server process.
+
+## P01 / D06 / D08 recheck - 26 November 2026
+
+### D06 - Current source corpus
+
+- Replaced the old PMFBY and 2024-26 tender-annexure URL list with the current PMFBY 2023 Operational Guidelines, current PMFBY FAQ page, its portal FAQ PDF, and the latest Nagapattinam PMFBY enrollment-extension notice found for this snapshot.
+- `scripts/fetch.py urls`: first pass downloaded the guideline, portal FAQ, and FAQ page shell; the CDN PDF linked by the district notice was blocked by `robots.txt`. Replaced that direct PDF URL with the official Nagapattinam landing page and reran: one downloaded, three skipped, zero blocked/failed. The downloader never bypassed robots rules.
+- The PMFBY FAQ page is a JavaScript app. Its ordinary download had zero extractable text, so I rendered the visible page with headless Chrome and registered the copy through the manual door. Extracted text: 5,966 characters. The original shell remains marked in the manifest but is excluded from usable corpus totals.
+- The current guideline PDF has 213 pages and 624,698 extracted characters. The portal FAQ PDF has 5 pages and 9,823 characters. The Nagapattinam notice page has 2,294 extracted characters. Current usable corpus: 4 documents, 220 PDF/HTML pages, 642,781 characters, 3.69 MB. See `DATASET.md` and `docs/CAPACITY.md`.
+- The district notice was published 14 November 2026 and extends Samba/Thaladi enrollment to 1 December 2026. PMFBY copyright policy requires permission for reproduction; district terms also require permission. Documents are for internal research and cited answers only until permissions are confirmed.
+- Current sources and formats are listed in `docs/SOURCES.md`. The parsed Postgres corpus was not changed in this D06 collection pass; this records source acquisition and measurements.
+
+### D08 - Live usage and chat verification
+
+- GitHub merged PR #9 at commit `3ec4de9f36cefe5cadae34ce7ec4f0c7f46e4d0a`; Render reports that same version live. The CD workflow's normal deployment runs `alembic upgrade head` using the GitHub `DATABASE_URL` secret before deploying.
+- `GET https://cropcover.onrender.com/health`: HTTP 200, version `3ec4de9f36cefe5cadae34ce7ec4f0c7f46e4d0a`.
+- `GET https://cropcover.onrender.com/v1/usage`: HTTP 200; the database returned recorded calls, confirming the usage table is available. At the check, it reported 28 calls and Rs 0.1276 total across 25-26 November.
+- Two live `POST /v1/chat` checks returned HTTP 200. Gemini answered the first (186 input / 6 output tokens, Rs 0.01539); Groq answered the second after Gemini failed over (250 input / 59 output tokens, Rs 0.003463). The follow-up usage response reported 7 calls for 26 November, Rs 0.0253 that day, and 28 calls total.
+- The earlier 503 is resolved at this snapshot. The two malformed test payloads returned 422 and were not counted as provider calls.
+
+### P01 - Week 1 self-check
+
+- Added `scripts/check_week1.py` from the supplied P01 material. It checks D01-D05 files, git state, unit tests, and the live `/health` version when run with the live URL.
+- Added `docs/SOURCES.md` with one row per current source, its format, terms, and retrieval method.

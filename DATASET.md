@@ -1,19 +1,22 @@
 # CropCover corpus snapshot
 
-Snapshot: 23 November 2026. The downloader's URL list currently resolves to ten local PDF files under `data/raw/`.
+Snapshot: 26 November 2026. The active source list has four official URLs. Three were saved directly; the current PMFBY FAQ page required a browser render because the downloader receives only its JavaScript shell. The rendered FAQ copy is separately registered in `data/manifest.jsonl`.
 
 | Measure | Value | Method |
 |---|---:|---|
-| Files | 10 | Files under `data/raw/` |
-| PDF pages | 737 | `pypdf` page count |
-| Disk size | 71.90 MB (68.56 MiB) | Sum of file sizes; MB is decimal |
-| Extracted text | 1,153,214 characters | `pypdf` text extraction across pages |
-| Estimated tokens | 288,304 (~0.288 M) | Character count divided by 4; rough proxy, not a model tokenizer |
-| Average estimated tokens per page | 391 | Estimated tokens divided by page count |
+| Usable source documents | 4 | Operational guidelines, current FAQ, portal FAQ PDF, and latest Nagapattinam notice page |
+| PDFs / PDF pages | 2 / 218 | `pypdf` page count |
+| HTML pages with extracted text | 2 | Rendered PMFBY FAQ page and Nagapattinam notice page |
+| Extracted text | 642,781 characters | `pypdf` plus `trafilatura` |
+| Disk size | 3.69 MB (3.52 MiB) | Sum of the four usable files; decimal MB |
+| Estimated tokens | 160,695 (~0.161 M) | Character count divided by 4; rough proxy, not a model tokenizer |
+| Average estimated tokens per page | 730 | Estimated tokens divided by 220 PDF/HTML pages |
 
-The current files include older PMFBY guidelines and Tamil Nadu tender annexures. They do not yet meet the requested target of current operational guidelines, usable FAQs, and the latest Tamil Nadu crop notification. Candidate current links and access findings are recorded in `NOTES.md`. The PMFBY copyright policy requires permission before reproduction; the Tamil Nadu district notice policy also requires permission. Do not treat the corpus as cleared for answer-text display until the applicable permissions or licences are confirmed.
+The current operational-guidelines PDF is listed on the [PMFBY Guidelines page](https://pmfby.gov.in/downloads) as “2023 Operational Guidelines”; its downloadable PDF is hosted by the PMFBY platform partner. The current [PMFBY FAQ page](https://pmfby.gov.in/faq) is a JavaScript app: the plain HTTP downloader saved a 6.8 kB shell with zero extractable characters, so the visible page was rendered with headless Chrome and registered with the manual fetch door. The page shell is retained as a retrieval record but excluded from the usable-document totals.
 
-`data/raw/` is ignored by Git. `data/manifest.jsonl` records retrieval status, provenance, byte count, and SHA-256 for the downloaded files.
+The latest Nagapattinam district PMFBY notice found for this snapshot was published 14 November 2026 and extends Samba/Thaladi enrollment through 1 December 2026. Its linked PDF was blocked by the CDN's `robots.txt`; the official district landing page was downloaded instead. The downloader did not bypass that block.
+
+PMFBY copyright policy and Tamil Nadu district website terms require permission before reproduction. These files are for internal research and source-linked answers only; the corpus is not cleared for displaying reproduced answer text until permissions are confirmed. `data/raw/` is ignored by Git. `data/manifest.jsonl` records retrieval status, provenance, byte count, and SHA-256.
 
 ## Duplicate check
 
@@ -34,4 +37,4 @@ for digest, urls in groups.items():
         print(digest, urls)
 ```
 
-Result for this snapshot: **0 files downloaded twice under different URLs**. The manifest contains a repeated record for the same Tamil Nadu `/5.pdf` URL and SHA-256; it is one unique URL and one unique file in this snapshot.
+Result for this snapshot: the rendered FAQ has one expected duplicate hash across its canonical page URL and its manual-render fragment URL. It is one document captured once, not a second source file.
