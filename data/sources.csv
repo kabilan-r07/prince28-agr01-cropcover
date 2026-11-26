@@ -1,18 +1,12 @@
 ﻿# Sources for CropCover. One row per file to download. Lines starting with # are notes.
-# Start target: Operational guidelines + FAQs + latest TN notification
+# Current start corpus (verified 26 Nov 2026): PMFBY operational guidance + FAQ + latest Nagapattinam TN crop-insurance notice.
 # Where to look:
 #   https://pmfby.gov.in/
 #   https://agriwelfare.gov.in/
 # Terms on my project card: Public scheme documents. Cite guideline paragraph and notification.
 # Reuse note: project-internal retrieval and answer display with attribution/citation only; confirm publisher terms before redistribution.
 url,source,licence,title
-https://pmfby.gov.in/pdf/Revised_Operational_Guidelines.pdf,pmfby,"Internal retrieval and answer citation only; historical reference; verify publisher terms before redistribution",PMFBY Revised Operational Guidelines
-https://pmfby.gov.in/pdf/RWBCIS_Revised_Guidelines_1.pdf,pmfby,"Internal retrieval and answer citation only; cite source; verify publisher terms before redistribution",RWBCIS Revised Operational Guidelines
-https://pmfby.gov.in/pdf/YES_TECH_Manual_2023.pdf,pmfby,"Internal retrieval and answer citation only; technical background; verify publisher terms before redistribution",YES-TECH Manual 2023
-https://www.tnagrisnet.tn.gov.in/CIS/docs/1.pdf,tnagrisnet,"Internal retrieval and answer citation only; cite notification and season; verify publisher terms before redistribution",Tamil Nadu PMFBY tender and implementation terms 2024-26
-https://www.tnagrisnet.tn.gov.in/CIS/docs/2.pdf,tnagrisnet,"Internal retrieval and answer citation only; cite notification and season; verify publisher terms before redistribution",Tamil Nadu PMFBY notified coverage annexure
-https://www.tnagrisnet.tn.gov.in/CIS/docs/3.pdf,tnagrisnet,"Internal retrieval and answer citation only; cite notification and season; verify publisher terms before redistribution",Tamil Nadu PMFBY notified coverage annexure
-https://www.tnagrisnet.tn.gov.in/CIS/docs/4.pdf,tnagrisnet,"Internal retrieval and answer citation only; cite notification and season; verify publisher terms before redistribution",Tamil Nadu PMFBY sum insured annexure
-https://www.tnagrisnet.tn.gov.in/CIS/docs/5.pdf,tnagrisnet,"Internal retrieval and answer citation only; cite notification and season; verify publisher terms before redistribution",Tamil Nadu PMFBY notified units annexure
-https://www.tnagrisnet.tn.gov.in/CIS/docs/7.pdf,tnagrisnet,"Internal retrieval and answer citation only; cite notification and season; verify publisher terms before redistribution",Tamil Nadu PMFBY Horticulture Annexure C notified units
-https://www.tnagrisnet.tn.gov.in/CIS/docs/9.pdf,tnagrisnet,"Internal retrieval and answer citation only; cite notification and season; verify publisher terms before redistribution",Tamil Nadu PMFBY cropwise and IUwise historical coverage 2024-25
+https://pmfby.amnex.co.in/pmfby/pdf/operational_guidelines_pmfby.pdf,pmfby,"Internal research and answer citations with attribution; PMFBY copyright policy applies; confirm permission before redistribution",PMFBY 2023 Operational Guidelines (listed in current PMFBY Guidelines)
+https://pmfby.gov.in/faq,pmfby,"Internal research and answer citations with attribution; PMFBY copyright policy applies; confirm permission before redistribution",PMFBY current FAQ page (browser-rendered HTML; 5,966 extracted characters)
+https://pmfby.gov.in/pdf/FAQ%E2%80%93For%20Portal.pdf,pmfby,"Internal research and answer citations with attribution; PMFBY copyright policy applies; confirm permission before redistribution",PMFBY FAQ for Portal Login and Registration
+https://nagapattinam.nic.in/deadline-for-farmers-to-enroll-in-crop-insurance-under-the-pradhan-mantri-fasal-bima-yojana-has-been-extended-until-01-12-2026/,nagapattinam.nic.in,"Internal research and answer citations with attribution; district website copyright/permission terms apply; confirm permission before redistribution",Nagapattinam PMFBY Samba and Thaladi 2026-27 enrollment deadline extension (published 2026-11-14; attached PDF link was blocked by robots.txt)
