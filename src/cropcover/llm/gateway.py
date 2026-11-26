@@ -79,8 +79,12 @@ class OpenAICompatProvider:
     async def aclose(self) -> None:
         await self._client.aclose()
 
-    def _body(self, messages, temperature, stream):
+    def _body(self, messages, temperature, stream, response_format=None, max_tokens=None):
         body = {"model": self.model, "messages": messages, "temperature": temperature}
+        if response_format:
+            body["response_format"] = response_format
+        if max_tokens:
+            body["max_tokens"] = max_tokens
         if stream:
             body |= {"stream": True, "stream_options": {"include_usage": True}}
         return body
@@ -100,10 +104,12 @@ class OpenAICompatProvider:
     def _network_error(exc):
         return LLMError(type(exc).__name__, retryable=not isinstance(exc, httpx.TimeoutException))
 
-    async def generate(self, messages, *, temperature=0.2):
+    async def generate(self, messages, *, temperature=0.2, response_format=None, max_tokens=None):
         try:
             response = await self._client.post(
-                self._url, headers=self._headers, json=self._body(messages, temperature, False)
+                self._url,
+                headers=self._headers,
+                json=self._body(messages, temperature, False, response_format, max_tokens),
             )
         except httpx.TransportError as exc:
             raise self._network_error(exc) from exc
@@ -160,7 +166,7 @@ class FakeLLM:
         self.calls += 1
         return self.script.pop(0) if self.script else "A fake answer."
 
-    async def generate(self, messages, *, temperature=0.2):
+    async def generate(self, messages, *, temperature=0.2, **options):
         item = self._next()
         if isinstance(item, Exception):
             raise item
