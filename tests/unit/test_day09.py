@@ -74,7 +74,7 @@ def test_doc_meta_rejects_unknown_fields():
         DocMeta.model_validate(
             {
                 "doc_kind": "guideline",
-                "topics": [],
+                "topics": ["insurance"],
                 "language": "English",
                 "summary": "x" * 25,
                 "pages": 4,
@@ -84,14 +84,20 @@ def test_doc_meta_rejects_unknown_fields():
 
 def test_doc_meta_rejects_implausible_year():
     with pytest.raises(ValidationError):
-        DocMeta(doc_kind="guideline", year=1800, topics=[], language="English", summary="x" * 25)
+        DocMeta(
+            doc_kind="guideline",
+            year=1800,
+            topics=["insurance"],
+            language="English",
+            summary="x" * 25,
+        )
 
 
 def test_doc_meta_rejects_premium_over_100():
     with pytest.raises(ValidationError):
         DocMeta(
             doc_kind="guideline",
-            topics=[],
+            topics=["insurance"],
             language="English",
             summary="x" * 25,
             farmer_premium_pct=101,
@@ -101,7 +107,7 @@ def test_doc_meta_rejects_premium_over_100():
 def test_ambiguous_document_seasons_are_cleared():
     meta = DocMeta(
         doc_kind="notification",
-        topics=[],
+        topics=["insurance"],
         language="English",
         summary="x" * 25,
         season="Rabi",
@@ -111,17 +117,32 @@ def test_ambiguous_document_seasons_are_cleared():
 
 
 def test_extract_parses_json_embedded_in_text():
-    record = {"doc_kind": "faq", "topics": [], "language": "English", "summary": "x" * 25}
+    record = {
+        "doc_kind": "faq",
+        "topics": ["insurance"],
+        "language": "English",
+        "summary": "x" * 25,
+    }
     assert parse_output("```json\n" + json.dumps(record) + "\n```").doc_kind == "faq"
 
 
 def test_extract_accepts_single_product_wrapper():
-    record = {"doc_kind": "faq", "topics": [], "language": "English", "summary": "x" * 25}
+    record = {
+        "doc_kind": "faq",
+        "topics": ["insurance"],
+        "language": "English",
+        "summary": "x" * 25,
+    }
     assert parse_output(json.dumps({"CropCover": record})).doc_kind == "faq"
 
 
 def test_extract_flattens_crop_fields_wrapper():
-    record = {"doc_kind": "faq", "topics": [], "language": "English", "summary": "x" * 25}
+    record = {
+        "doc_kind": "faq",
+        "topics": ["insurance"],
+        "language": "English",
+        "summary": "x" * 25,
+    }
     wrapped = {**record, "CropCover": {"district": "Nagapattinam"}}
     assert parse_output(json.dumps(wrapped)).district == "Nagapattinam"
 
