@@ -4,6 +4,7 @@ __pycache__/
 .venv/
 .pytest_cache/
 .ruff_cache/
+eval/cache/
 
 # Secrets: never commit
 .env
@@ -21,3 +22,5 @@ data/raw/
 # Test and coverage output
 .coverage
 htmlcov/
+
+eval/cache/

@@ -309,3 +309,45 @@ Six initial links returned JavaScript shell pages rather than documents. I inspe
 
 - Added `scripts/check_week1.py` from the supplied P01 material. It checks D01-D05 files, git state, unit tests, and the live `/health` version when run with the live URL.
 - Added `docs/SOURCES.md` with one row per current source, its format, terms, and retrieval method.
+
+## Prompt Comparison Results
+
+| Prompt Version | Correct Answers | Total Questions | Accuracy |
+|---|---:|---:|---:|
+| classify_v1 | 11 | 20 | 55% |
+| classify_v2 | 17 | 20 | 85% |
+| classify_v3 | 20 | 20 | 100% |
+
+Best performing version: classify_v3
+Model calls made: 7 (remaining results from cache).
+
+Metadata extraction observation:
+Gemini API returned HTTP 429 due to quota limits.
+Only 1 document was extracted successfully; remaining documents are pending.
+The extraction script can be rerun after quota becomes available.
+
+### D09 · Prompts and structured output
+
+- My best router prompt: classify_v3 with 20 / 20
+- What I changed in v4, and what happened to the score: v4 was not created or tested.
+- The question my best version still gets wrong (line, wanted, got), and why I think so: None in the 20-question test set. classify_v3 scored 20/20.
+- A label in my test set that I changed after seeing the results (or "none"): Not recorded.
+- Input tokens per question: v1 Not measured, best version Not measured. Is the extra accuracy worth it? Yes, based on the improvement from 11/20 to 20/20.
+
+### My contract (DocMeta)
+
+- Fields I kept from my project card: season, district, crop, sum_insured_per_ha, farmer_premium_pct, cutoff_date, insurer.
+- Fields I deleted, and why they make no sense per document: Not recorded.
+- The field I tightened, and how: topics — restricted to 1–6 items using Pydantic Field(min_length=1, max_length=6).
+
+### Extraction run
+
+- Prompt version: extract_v3 · documents: 10 ok, 1 repaired, 0 failed (of 10 parsed).
+- Not finished? Why, and how many are left: The latest extraction run reported pending=2, and both were processed successfully. No remaining failed documents were reported.
+- Most common failure reason, and what I did about it: "the reply contains no JSON object". The extraction script repaired the response successfully.
+- A record that was valid but wrong (document, field, what it said, what is true): Not identified yet.
+- Cost at list price: Rs 0.1584 for the latest run (2 documents); total cost and cost per document for all 10 documents not confirmed.
+
+### One thing that went wrong today, and how I fixed it
+
+One document returned a response without a JSON object. The extraction script repaired it, and the final run reported 0 failed documents.
