@@ -333,6 +333,7 @@ The extraction script can be rerun after quota becomes available.
 - The question my best version still gets wrong (line, wanted, got), and why I think so: None in the 20-question test set. classify_v3 scored 20/20.
 - A label in my test set that I changed after seeing the results (or "none"): Not recorded.
 - Input tokens per question: v1 Not measured, best version Not measured. Is the extra accuracy worth it? Yes, based on the improvement from 11/20 to 20/20.
+- What I changed in v4, and what happened to the score: classify_v4.md was removed from the final prompt set. Its score and exact changes are not confirmed.
 
 ### My contract (DocMeta)
 
